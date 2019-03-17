@@ -16,12 +16,7 @@ EOF
 
 for name in $(echo $2 | tr "," "\n")
 do
-    sed="sed"
-    if [[ $PLATFORM == 'darwin' ]]; then
-        sed="gsed"
-    fi
-
-    snake_name=`echo $name | $sed 's/^[[:upper:]]/\L&/;s/[[:upper:]]/\L_&/g'`
+    snake_name=`echo -n $name | python -c "import re, sys; [s] = sys.stdin; sys.stdout.write(re.sub(r'(.)([A-Z])', r'\1_\2', s).lower())"`
     echo "$snake_name = _op_lib.$snake_name"
 done
 
